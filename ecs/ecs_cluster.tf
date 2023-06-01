@@ -7,4 +7,4 @@ resource "aws_ecs_cluster" "WorkshopECSCluster" {
     }
 }
 
-# Capacity Provider -> AutoScailng 구성 시
+# Capacity Provider -> AutoScailng 구성 
