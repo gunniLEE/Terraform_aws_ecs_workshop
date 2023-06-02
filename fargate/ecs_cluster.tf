@@ -96,3 +96,24 @@ resource "aws_ecs_task_definition" "dogs" {
     Application = "DOGS"
   }
 }
+
+# ECS Service
+resource "aws_ecs_service" "web-svc" {
+    name              = "web-svc"
+    cluster           = aws_ecs_cluster.WorkshopECSCluster.id
+    task_definition   = aws_ecs_task_definition.web.arn   ## id is not work ?? -> test
+    desired_count     = 2
+    launch_type       = "FARGATE"
+
+    network_configuration {
+      security_groups     = [aws_security_group.ecs_svc_sg.id]
+      subnets             = [aws_subnet.WorkShopPrivateSubnet1.id, aws_subnet.WorkShopPrivateSubnet2.id]
+      assign_public_ip    = true
+  }
+    load_balancer {
+      target_group_arn    = aws_lb_target_group.ecs-svc.arn
+      container_name      = "web-def"
+      container_port      = 80
+    
+  }
+}
